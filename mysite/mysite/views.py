@@ -1,6 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
+from .models import BlogPost
+
 # def hello(request):
 #     return HttpResponse("<h1>Hello Django!</h1>")
 
@@ -17,4 +19,7 @@ def greet(request,name):
 #templates
 def hello(request):
     return render(request,"mysite/hello.html")
-    
+
+def blog_list(request):
+    posts = BlogPost.objects.all().order_by('-published_on')  # fixed typo
+    return render(request, 'mysite/bloglist.html', {'posts': posts})

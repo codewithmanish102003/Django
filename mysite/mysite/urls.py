@@ -23,5 +23,6 @@ urlpatterns = [
     path("",views.hello,name="hello"),
     path("about/",views.about,name="about"),
     path("contact/",views.contact,name="contact"),
-    path('greet/<str:name>/',views.greet,name="greet")
+    path('greet/<str:name>/',views.greet,name="greet"),
+     path('blog/', views.blog_list, name='blog')
 ]
