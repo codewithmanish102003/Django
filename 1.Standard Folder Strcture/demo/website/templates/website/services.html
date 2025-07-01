@@ -1,0 +1,24 @@
+{% extends "website/layout.html" %}
+
+{% block title %}Services - My Site{% endblock %}
+
+{% block content %}
+<div class="mt-5">
+    <h1>Our Services</h1>
+    <p>Explore the services we offer to our clients.</p>
+
+    <ul class="list-decimal">
+        {% for service in services %}
+        <li class="m-5">
+            <h1 class="text-2xl">{{service.name}}</h1>
+            <img class="w-60" src="{{service.image.url}}" alt="">
+            <p>ID : {{service.id}}</p>
+            <a href="{% url 'service_details' service.id %}">
+                 <button type="button" class="bg-emerald-600 border-2 rounded-2xl p-4">See Details</button>
+            </a>
+           
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
