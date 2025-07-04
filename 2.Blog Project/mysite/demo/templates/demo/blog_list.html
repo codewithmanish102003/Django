@@ -1,0 +1,22 @@
+{% extends "demo/layout.html" %}
+
+{% block title %}Blogs - My Site{% endblock %}
+
+{% block content %}
+<div>
+    <h1>Blog Posts</h1>
+    {% if posts %}
+        <ul style="list-style: none; padding: 0;">
+            {% for post in posts %}
+                <li style="background: #fff; margin-bottom: 1rem; padding: 1rem 1.5rem; border-radius: 6px; box-shadow: 0 1px 4px rgba(0,0,0,0.04);">
+                    <h2 style="margin: 0 0 0.5rem 0; font-size: 1.3rem; color: #2563eb;">{{ post.title }}</h2>
+                    <p>{{post.content}}</p>
+                    <div style="color: #6b7280; font-size: 0.95rem;">Published on {{ post.published_on|date:"F j, Y, g:i a" }}</div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No blog posts found.</p>
+    {% endif %}
+</div>
+{% endblock %}
