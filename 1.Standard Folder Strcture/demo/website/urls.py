@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path # type: ignore
 from . import views
 
 urlpatterns=[
@@ -6,5 +6,6 @@ urlpatterns=[
     ,path('about/',views.about,name="about")
     ,path('contact/',views.contact,name="contact")
     ,path('services/',views.services,name="services"),
-    path('<int:service_id>/',views.service_details,name='service_details')
+    #dynamic url
+    path('services/<int:service_id>/',views.service_details,name='service_details'),
 ]
