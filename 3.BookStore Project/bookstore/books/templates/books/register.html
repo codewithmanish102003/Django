@@ -1,0 +1,73 @@
+{% extends 'books/layout.html' %}
+
+{% block title %}Register - BookStore{% endblock %}
+
+{% block content %}
+<div class="form-header">
+    <h1 style="color: white; margin: 0;">📝 Register</h1>
+    <p style="color: white; margin: 0.5rem 0 0 0; opacity: 0.9;">Create your account to join our book community</p>
+</div>
+
+<div style="max-width: 400px; margin: 0 auto;">
+    <div class="add-book-form">
+        <form method="post">
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+                <div class="error-message">
+                    {% for error in form.non_field_errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div class="form-group">
+                <label for="id_username">Username:</label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                    <div class="error-message">
+                        {% for error in form.username.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="id_email">Email:</label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                    <div class="error-message">
+                        {% for error in form.email.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="id_password1">Password:</label>
+                {{ form.password1 }}
+                {% if form.password1.errors %}
+                    <div class="error-message">
+                        {% for error in form.password1.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="id_password2">Confirm Password:</label>
+                {{ form.password2 }}
+                {% if form.password2.errors %}
+                    <div class="error-message">
+                        {% for error in form.password2.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="text-center mt-2">
+                <button type="submit" class="btn">Register</button>
+                <a href="{% url 'login' %}" class="btn btn-secondary" style="margin-left: 1rem;">Login</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

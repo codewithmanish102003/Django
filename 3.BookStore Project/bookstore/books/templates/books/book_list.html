@@ -1,14 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Bookstore</title>
-</head>
-<body>
-    <h1>Book List</h1>
-    <ul>
+{% extends 'books/layout.html' %}
+
+{% block title %}Our Books - BookStore{% endblock %}
+
+{% block content %}
+<h1>📚 Our Book Collection</h1>
+<p class="text-center">Discover amazing books from talented authors</p>
+
+{% if books %}
+    <div class="book-list">
         {% for book in books %}
-        <li><strong>{{ book.title }}</strong> by {{ book.author }}</li>
+        <div class="book-item">
+            {% if book.cover %}
+                <img src="{{ book.cover.url }}" alt="Cover for {{ book.title }}" style="max-width: 100px; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            {% endif %}
+            <div class="book-title"><a href="{% url 'book_details' book.id %}" style="text-decoration: none; color: inherit;">{{ book.title }}</a></div>
+            <div class="book-author">by {{ book.author }}</div>
+            <div style="margin-top: 1rem;">
+                <a href="{% url 'edit_book' book.id %}" class="btn btn-secondary">Edit</a>
+            </div>
+        </div>
         {% endfor %}
-    </ul>
-</body>
-</html>
+    </div>
+{% else %}
+    <div class="text-center mt-2">
+        <p>No books available at the moment.</p>
+        <p>Check back soon for new additions!</p>
+    </div>
+{% endif %}
+
+<div class="text-center mt-2">
+    <a href="{% url 'addbook' %}" class="btn">Add New Book</a>
+    <a href="{% url 'contact' %}" class="btn btn-secondary" style="margin-left: 1rem;">Contact Us</a>
+</div>
+{% endblock %}

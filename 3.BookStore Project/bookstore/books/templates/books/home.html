@@ -1,0 +1,44 @@
+{% extends 'books/layout.html' %}
+
+{% block title %}Welcome to BookStore{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <h1>📚 Welcome to BookStore</h1>
+    <p class="text-center" style="font-size: 1.2rem; color: #666; margin-bottom: 2rem;">
+        Your gateway to amazing stories and knowledge
+    </p>
+    
+    <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 2rem; border-radius: 15px; margin-bottom: 2rem; color: white;">
+        <h2 style="color: white; margin-bottom: 1rem;">Discover Amazing Books</h2>
+        <p style="color: white; margin-bottom: 1.5rem;">
+            Explore our curated collection of books from talented authors around the world. 
+            From fiction to non-fiction, we have something for every reader.
+        </p>
+        <a href="{% url 'book_list' %}" class="btn" style="background: white; color: #f5576c; font-weight: bold;">
+            Browse Our Collection
+        </a>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin: 2rem 0;">
+        <div class="feature-card primary">
+            <h3 style="color: #667eea;">📖 Diverse Collection</h3>
+            <p>From classic literature to contemporary bestsellers, our collection spans genres and eras.</p>
+        </div>
+        
+        <div class="feature-card success">
+            <h3 style="color: #28a745;">🌟 Quality Content</h3>
+            <p>Every book in our collection is carefully selected to ensure the highest quality reading experience.</p>
+        </div>
+        
+        <div class="feature-card warning">
+            <h3 style="color: #ffc107;">💬 Get in Touch</h3>
+            <p>Have questions or suggestions? We'd love to hear from you and help you find your next favorite book.</p>
+        </div>
+    </div>
+    
+    <div class="mt-2">
+        <a href="{% url 'contact' %}" class="btn btn-secondary">Contact Us</a>
+    </div>
+</div>
+{% endblock %} 

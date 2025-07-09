@@ -1,0 +1,62 @@
+{% extends 'books/layout.html' %}
+
+{% block title %}Edit Book - BookStore{% endblock %}
+
+{% block content %}
+<div class="form-header">
+    <h1 style="color: white; margin: 0;">✏️ Edit Book</h1>
+    <p style="color: white; margin: 0.5rem 0 0 0; opacity: 0.9;">
+        Update the details for <strong>{{ book.title }}</strong>
+    </p>
+</div>
+
+<div style="max-width: 600px; margin: 0 auto;">
+    <div class="add-book-form">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="{{ form.title.id_for_label }}">📚 Book Title:</label>
+                {{ form.title }}
+                {% if form.title.errors %}
+                    <div class="error-message">
+                        {% for error in form.title.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.author.id_for_label }}">✍️ Author:</label>
+                {{ form.author }}
+                {% if form.author.errors %}
+                    <div class="error-message">
+                        {% for error in form.author.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.cover.id_for_label }}">🖼️ Cover Image:</label>
+                {{ form.cover }}
+                {% if form.cover.errors %}
+                    <div class="error-message">
+                        {% for error in form.cover.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% if book.cover %}
+                    <div style="margin-top: 1rem;">
+                        <img src="{{ book.cover.url }}" alt="Current Cover" style="max-width: 150px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    </div>
+                {% endif %}
+            </div>
+            <div class="text-center mt-2">
+                <button type="submit" class="btn">💾 Save Changes</button>
+                <a href="{% url 'book_list' %}" class="btn btn-secondary" style="margin-left: 1rem;">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %} 

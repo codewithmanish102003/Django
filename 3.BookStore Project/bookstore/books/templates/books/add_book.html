@@ -1,0 +1,73 @@
+{% extends 'books/layout.html' %}
+
+{% block title %}Add New Book - BookStore{% endblock %}
+
+{% block content %}
+<div class="form-header">
+    <h1 style="color: white; margin: 0;">📖 Add New Book</h1>
+    <p style="color: white; margin: 0.5rem 0 0 0; opacity: 0.9;">
+        Share your favorite book with our community
+    </p>
+</div>
+
+<div style="max-width: 600px; margin: 0 auto;">
+    <div class="add-book-form">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="{{ form.title.id_for_label }}">📚 Book Title:</label>
+                {{ form.title }}
+                {% if form.title.errors %}
+                    <div class="error-message">
+                        {% for error in form.title.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.author.id_for_label }}">✍️ Author:</label>
+                {{ form.author }}
+                {% if form.author.errors %}
+                    <div class="error-message">
+                        {% for error in form.author.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.cover.id_for_label }}">🖼️ Cover Image:</label>
+                {{ form.cover }}
+                {% if form.cover.errors %}
+                    <div class="error-message">
+                        {% for error in form.cover.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="text-center mt-2">
+                <button type="submit" class="btn">➕ Add Book</button>
+                <a href="{% url 'book_list' %}" class="btn btn-secondary" style="margin-left: 1rem;">❌ Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="text-center mt-2">
+    <div class="feature-card tips-section" style="max-width: 500px; margin: 0 auto;">
+        <h3 style="color: #2196f3; margin-bottom: 1rem;">💡 Tips for Adding Books</h3>
+        <ul style="text-align: left; list-style: none; padding: 0;">
+            <li style="margin-bottom: 0.5rem;">✅ Use the full, official title of the book</li>
+            <li style="margin-bottom: 0.5rem;">✅ Include the author's full name</li>
+            <li style="margin-bottom: 0.5rem;">✅ Double-check spelling before submitting</li>
+            <li style="margin-bottom: 0.5rem;">✅ Make sure the book isn't already in our collection</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

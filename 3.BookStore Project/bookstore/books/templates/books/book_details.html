@@ -1,0 +1,14 @@
+{% extends 'books/layout.html' %}
+
+{% block title %}{{ book.title }} - Details{% endblock %}
+
+{% block content %}
+<div class="feature-card primary" style="max-width: 500px; margin: 2rem auto; text-align: center;">
+    {% if book.cover %}
+        <img src="{{ book.cover.url }}" alt="Cover for {{ book.title }}" style="max-width: 200px; border-radius: 10px; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+    {% endif %}
+    <h2 style="margin-bottom: 0.5rem;">{{ book.title }}</h2>
+    <h3 style="color: #667eea; margin-bottom: 1.5rem;">by {{ book.author }}</h3>
+    <a href="{% url 'book_list' %}" class="btn btn-secondary">&larr; Back to Book List</a>
+</div>
+{% endblock %} 
