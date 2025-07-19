@@ -14,3 +14,19 @@ urlpatterns = [
     path("books/<int:book_id>/", views.book_details, name="book_details"),
 ]
 
+
+#class based Views
+# from django.urls import path
+# from . import views
+
+# urlpatterns = [
+#     path("", views.HomeView.as_view(), name="home"),
+#     path("books/", views.BookListView.as_view(), name="book_list"),
+#     path("contact/", views.ContactView.as_view(), name="contact"),
+#     path("add_book/", views.AddBookView.as_view(), name="addbook"),
+#     path("books/edit/<int:pk>/", views.EditBookView.as_view(), name="edit_book"),
+#     path("books/<int:pk>/", views.BookDetailView.as_view(), name="book_details"),
+#     path("register/", views.RegisterView.as_view(), name="register"),
+#     path("login/", views.CustomLoginView.as_view(), name="login"),
+#     path("logout/", views.CustomLogoutView.as_view(), name="logout"),
+# ]

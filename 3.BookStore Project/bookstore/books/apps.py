@@ -1,6 +1,8 @@
-from django.apps import AppConfig
+from django.apps import AppConfig # type: ignore
 
 
 class BooksConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
     name = 'books'
+
+    def ready(self):
+        import books.signals  # noqa
