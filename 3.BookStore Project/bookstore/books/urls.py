@@ -12,6 +12,8 @@ urlpatterns = [
     path("login/", views.login_view, name="login"),
     path("logout/", views.logout_view, name="logout"),
     path("books/<int:book_id>/", views.book_details, name="book_details"),
+    path("books/delete/<int:book_id>/", views.delete_book, name="delete_book"),
+    path("profile/", views.profile, name="profile"),
 ]
 
 

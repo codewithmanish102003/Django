@@ -1,4 +1,9 @@
-from django.db import models # type: ignore
+from django.contrib.auth.models import AbstractUser # type: ignore
+from django.db import models  # type: ignore
+
+
+class CustomUser(AbstractUser):
+    phone_number = models.CharField(max_length=15, blank=True)
 
 class Book(models.Model):
     title = models.CharField(max_length=200)

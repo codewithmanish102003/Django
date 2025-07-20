@@ -1,0 +1,17 @@
+{% extends 'books/layout.html' %}
+
+{% block title %}My Profile - BookStore{% endblock %}
+
+{% block content %}
+<div class="feature-card primary" style="max-width: 500px; margin: 2rem auto; text-align: center;">
+    <h2 style="margin-bottom: 1.5rem;">👤 My Profile</h2>
+    <div style="font-size: 1.1rem; text-align: left; margin: 0 auto; max-width: 350px;">
+        <p><strong>Username:</strong> {{ user.username }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Phone Number:</strong> {{ user.phone_number|default:'-' }}</p>
+    </div>
+    <div style="margin-top: 2rem;">
+        <a href="{% url 'book_list' %}" class="btn btn-secondary">&larr; Back to Book List</a>
+    </div>
+</div>
+{% endblock %} 

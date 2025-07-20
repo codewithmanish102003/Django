@@ -1,0 +1,22 @@
+{% extends 'books/layout.html' %}
+
+{% block title %}Delete Book - BookStore{% endblock %}
+
+{% block content %}
+<div class="form-header">
+    <h1 style="color: white; margin: 0;">🗑️ Delete Book</h1>
+    <p style="color: white; margin: 0.5rem 0 0 0; opacity: 0.9;">
+        Are you sure you want to delete <strong>{{ book.title }}</strong>?
+    </p>
+</div>
+
+<div style="max-width: 500px; margin: 0 auto;">
+    <form method="post">
+        {% csrf_token %}
+        <div class="text-center mt-2">
+            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            <a href="{% url 'book_list' %}" class="btn btn-secondary" style="margin-left: 1rem;">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %} 

@@ -17,6 +17,7 @@
             <div class="book-author">by {{ book.author }}</div>
             <div style="margin-top: 1rem;">
                 <a href="{% url 'edit_book' book.id %}" class="btn btn-secondary">Edit</a>
+                <a href="{% url 'delete_book' book.id %}" class="btn btn-danger" style="margin-left: 0.5rem;">Delete</a>
             </div>
         </div>
         {% endfor %}

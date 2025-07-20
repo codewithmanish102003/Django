@@ -1,8 +1,9 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from django.shortcuts import redirect, render  # type: ignore
+from django.shortcuts import (get_object_or_404, redirect,  # type: ignore
+                              render)
 
 from .forms import BookForm, ContactForm, RegisterForm
 from .models import Book
@@ -54,6 +55,15 @@ def edit_book(request, book_id):
         form = BookForm(instance=book)
     return render(request, 'books/edit_book.html', {'form': form, 'book': book})
 
+@login_required
+def delete_book(request, book_id):
+    book = get_object_or_404(Book, pk=book_id)
+    if request.method == "POST":
+        book.delete()
+        messages.success(request, "Book deleted successfully!")
+        return redirect('book_list')
+    return render(request, 'books/delete_book.html', {'book': book})
+
 def register_view(request):
     if request.method == "POST":
         form=RegisterForm(request.POST)
@@ -99,6 +109,11 @@ def logout_view(request):
 def book_details(request, book_id):
     book = Book.objects.get(pk=book_id)
     return render(request, 'books/book_details.html', {'book': book})
+
+@login_required
+def profile(request):
+    user = request.user
+    return render(request, 'books/profile.html', {'user': user})
 
 
 #class based views
