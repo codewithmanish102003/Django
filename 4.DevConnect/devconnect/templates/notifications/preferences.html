@@ -1,0 +1,229 @@
+{% extends 'base.html' %}
+
+{% block title %}Notification Preferences - DevConnect{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="mb-0">Notification Preferences</h3>
+                    <p class="text-muted mb-0">Customize how and when you receive notifications</p>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <!-- Email Notifications -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="mb-3">Email Notifications</h5>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="email_notifications" 
+                                           name="email_notifications" 
+                                           {% if preferences.email_notifications %}checked{% endif %}>
+                                    <label class="form-check-label" for="email_notifications">
+                                        Enable Email Notifications
+                                    </label>
+                                </div>
+                                <div class="form-text">Receive notifications via email</div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="email_digest" 
+                                           name="email_digest" 
+                                           {% if preferences.email_digest %}checked{% endif %}>
+                                    <label class="form-check-label" for="email_digest">
+                                        Daily Email Digest
+                                    </label>
+                                </div>
+                                <div class="form-text">Get a summary of all notifications once per day</div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="email_frequency" class="form-label">Email Frequency</label>
+                                <select class="form-select" id="email_frequency" name="email_frequency">
+                                    <option value="immediate" {% if preferences.email_frequency == 'immediate' %}selected{% endif %}>Immediate</option>
+                                    <option value="hourly" {% if preferences.email_frequency == 'hourly' %}selected{% endif %}>Hourly</option>
+                                    <option value="daily" {% if preferences.email_frequency == 'daily' %}selected{% endif %}>Daily</option>
+                                    <option value="weekly" {% if preferences.email_frequency == 'weekly' %}selected{% endif %}>Weekly</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Push Notifications -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="mb-3">Push Notifications</h5>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="push_notifications" 
+                                           name="push_notifications" 
+                                           {% if preferences.push_notifications %}checked{% endif %}>
+                                    <label class="form-check-label" for="push_notifications">
+                                        Enable Push Notifications
+                                    </label>
+                                </div>
+                                <div class="form-text">Receive notifications in your browser</div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="push_sound" 
+                                           name="push_sound" 
+                                           {% if preferences.push_sound %}checked{% endif %}>
+                                    <label class="form-check-label" for="push_sound">
+                                        Sound Alerts
+                                    </label>
+                                </div>
+                                <div class="form-text">Play sound when notifications arrive</div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="push_vibration" 
+                                           name="push_vibration" 
+                                           {% if preferences.push_vibration %}checked{% endif %}>
+                                    <label class="form-check-label" for="push_vibration">
+                                        Vibration Alerts
+                                    </label>
+                                </div>
+                                <div class="form-text">Vibrate device for notifications (mobile)</div>
+                            </div>
+                        </div>
+
+                        <!-- Notification Types -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="mb-3">Notification Types</h5>
+                                <p class="text-muted">Choose which types of notifications you want to receive</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="message_notifications" 
+                                           name="message_notifications" 
+                                           {% if preferences.message_notifications %}checked{% endif %}>
+                                    <label class="form-check-label" for="message_notifications">
+                                        New Messages
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="profile_view_notifications" 
+                                           name="profile_view_notifications" 
+                                           {% if preferences.profile_view_notifications %}checked{% endif %}>
+                                    <label class="form-check-label" for="profile_view_notifications">
+                                        Profile Views
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="connection_notifications" 
+                                           name="connection_notifications" 
+                                           {% if preferences.connection_notifications %}checked{% endif %}>
+                                    <label class="form-check-label" for="connection_notifications">
+                                        Connection Requests
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="project_notifications" 
+                                           name="project_notifications" 
+                                           {% if preferences.project_notifications %}checked{% endif %}>
+                                    <label class="form-check-label" for="project_notifications">
+                                        Project Updates
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="job_notifications" 
+                                           name="job_notifications" 
+                                           {% if preferences.job_notifications %}checked{% endif %}>
+                                    <label class="form-check-label" for="job_notifications">
+                                        Job Opportunities
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="system_notifications" 
+                                           name="system_notifications" 
+                                           {% if preferences.system_notifications %}checked{% endif %}>
+                                    <label class="form-check-label" for="system_notifications">
+                                        System Updates
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="achievement_notifications" 
+                                           name="achievement_notifications" 
+                                           {% if preferences.achievement_notifications %}checked{% endif %}>
+                                    <label class="form-check-label" for="achievement_notifications">
+                                        Achievements
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="reminder_notifications" 
+                                           name="reminder_notifications" 
+                                           {% if preferences.reminder_notifications %}checked{% endif %}>
+                                    <label class="form-check-label" for="reminder_notifications">
+                                        Reminders
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quiet Hours -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="mb-3">Quiet Hours</h5>
+                                <p class="text-muted">Set times when you don't want to receive notifications</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="quiet_hours_enabled" 
+                                           name="quiet_hours_enabled" 
+                                           {% if preferences.quiet_hours_enabled %}checked{% endif %}>
+                                    <label class="form-check-label" for="quiet_hours_enabled">
+                                        Enable Quiet Hours
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="quiet_hours_start" class="form-label">Start Time</label>
+                                <input type="time" class="form-control" id="quiet_hours_start" 
+                                       name="quiet_hours_start" 
+                                       value="{{ preferences.quiet_hours_start|default:'22:00' }}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="quiet_hours_end" class="form-label">End Time</label>
+                                <input type="time" class="form-control" id="quiet_hours_end" 
+                                       name="quiet_hours_end" 
+                                       value="{{ preferences.quiet_hours_end|default:'08:00' }}">
+                            </div>
+                        </div>
+
+                        <!-- Submit Buttons -->
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'notifications:notification_list' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Notifications
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Save Preferences
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

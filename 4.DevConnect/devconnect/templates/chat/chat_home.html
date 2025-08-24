@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+
+{% block title %}Chat - DevConnect{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- Conversations List -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Conversations</h5>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#newChatModal">
+                            <i class="fas fa-plus me-1"></i>New Chat
+                        </button>
+                        <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#groupChatModal">
+                            <i class="fas fa-users me-1"></i>Group
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    {% if conversations %}
+                        <div class="list-group list-group-flush">
+                            {% for conversation in conversations %}
+                            <a href="{% url 'chat:conversation_detail' conversation.id %}" 
+                               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center p-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        {% if conversation.is_group_chat %}
+                                            <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" 
+                                                 style="width: 40px; height: 40px;">
+                                                <i class="fas fa-users text-white"></i>
+                                            </div>
+                                        {% else %}
+                                            {% with other_user=conversation.get_other_participant.user %}
+                                                {% if other_user.avatar %}
+                                                    <img src="{{ other_user.avatar.url }}" alt="{{ other_user.username }}" 
+                                                         class="rounded-circle" width="40" height="40">
+                                                {% else %}
+                                                    <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center" 
+                                                         style="width: 40px; height: 40px;">
+                                                        <i class="fas fa-user text-white"></i>
+                                                    </div>
+                                                {% endif %}
+                                            {% endwith %}
+                                        {% endif %}
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">
+                                            {% if conversation.is_group_chat %}
+                                                {{ conversation.name|default:"Group Chat" }}
+                                            {% else %}
+                                                {% with other_user=conversation.get_other_participant.user %}
+                                                    {{ other_user.get_full_name|default:other_user.username }}
+                                                {% endwith %}
+                                            {% endif %}
+                                        </h6>
+                                        <small class="text-muted">
+                                            {% if conversation.messages.last %}
+                                                {{ conversation.messages.last.content|truncatechars:50 }}
+                                            {% else %}
+                                                No messages yet
+                                            {% endif %}
+                                        </small>
+                                    </div>
+                                </div>
+                                {% if conversation.get_unread_count > 0 %}
+                                    <span class="badge bg-primary rounded-pill">{{ conversation.get_unread_count }}</span>
+                                {% endif %}
+                            </a>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-comments fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">No conversations yet</p>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newChatModal">
+                                Start Your First Chat
+                            </button>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chat Area -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-comments fa-4x text-muted mb-3"></i>
+                    <h4 class="text-muted">Select a conversation to start chatting</h4>
+                    <p class="text-muted">Choose from your existing conversations or start a new one</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- New Chat Modal -->
+<div class="modal fade" id="newChatModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Start New Chat</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'chat:start_conversation' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" 
+                               placeholder="Enter username to chat with" required>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Start Chat</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Group Chat Modal -->
+<div class="modal fade" id="groupChatModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create Group Chat</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'chat:create_group_chat' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="group_name" class="form-label">Group Name</label>
+                        <input type="text" class="form-control" id="group_name" name="name" 
+                               placeholder="Enter group name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="participants" class="form-label">Participants (usernames separated by commas)</label>
+                        <input type="text" class="form-control" id="participants" name="participants" 
+                               placeholder="username1, username2, username3" required>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Create Group</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

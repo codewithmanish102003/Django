@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ profile_user.get_full_name|default:profile_user.username }} - DevConnect{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <!-- Profile Header -->
+        <div class="col-12 mb-4">
+            <div class="card">
+                <div class="card-body p-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-3 text-center">
+                            {% if profile_user.avatar %}
+                                <img src="{{ profile_user.avatar.url }}" alt="{{ profile_user.username }}" 
+                                     class="rounded-circle mb-3" width="150" height="150">
+                            {% else %}
+                                <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                                     style="width: 150px; height: 150px;">
+                                    <i class="fas fa-user fa-4x text-white"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-9">
+                            <h1 class="h2 mb-2">{{ profile_user.get_full_name|default:profile_user.username }}</h1>
+                            <p class="text-muted mb-3">@{{ profile_user.username }}</p>
+                            
+                            {% if profile_user.bio %}
+                                <p class="lead mb-3">{{ profile_user.bio }}</p>
+                            {% endif %}
+                            
+                            <div class="d-flex flex-wrap gap-2 mb-3">
+                                {% if profile_user.is_available_for_hire %}
+                                    <span class="badge bg-success fs-6">Available for Hire</span>
+                                {% endif %}
+                                {% if profile_user.is_available_for_projects %}
+                                    <span class="badge bg-info fs-6">Open to Projects</span>
+                                {% endif %}
+                                {% if profile_user.location %}
+                                    <span class="badge bg-secondary fs-6">
+                                        <i class="fas fa-map-marker-alt me-1"></i>{{ profile_user.location }}
+                                    </span>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="d-flex gap-2">
+                                {% if is_own_profile %}
+                                    <a href="{% url 'profiles:edit_profile' profile_user.username %}" class="btn btn-primary">
+                                        <i class="fas fa-edit me-2"></i>Edit Profile
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'profiles:start_chat' profile_user.username %}" class="btn btn-primary">
+                                        <i class="fas fa-comment me-2"></i>Send Message
+                                    </a>
+                                    <a href="{% url 'profiles:user_profile' profile_user.username %}?tab=connections" class="btn btn-outline-primary">
+                                        <i class="fas fa-users me-2"></i>View Connections
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Profile Details -->
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">About</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <strong>Email:</strong>
+                            <p class="text-muted">{{ profile_user.email }}</p>
+                        </div>
+                        {% if profile_user.date_of_birth %}
+                        <div class="col-md-6 mb-3">
+                            <strong>Date of Birth:</strong>
+                            <p class="text-muted">{{ profile_user.date_of_birth|date:"F j, Y" }}</p>
+                        </div>
+                        {% endif %}
+                        {% if profile_user.location %}
+                        <div class="col-md-6 mb-3">
+                            <strong>Location:</strong>
+                            <p class="text-muted">{{ profile_user.location }}</p>
+                        </div>
+                        {% endif %}
+                        {% if profile_user.website %}
+                        <div class="col-md-6 mb-3">
+                            <strong>Website:</strong>
+                            <p class="text-muted">
+                                <a href="{{ profile_user.website }}" target="_blank" class="text-decoration-none">
+                                    {{ profile_user.website }}
+                                </a>
+                            </p>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    {% if profile_user.github_username or profile_user.linkedin_url %}
+                    <div class="row">
+                        {% if profile_user.github_username %}
+                        <div class="col-md-6 mb-3">
+                            <strong>GitHub:</strong>
+                            <p class="text-muted">
+                                <a href="https://github.com/{{ profile_user.github_username }}" target="_blank" class="text-decoration-none">
+                                    <i class="fab fa-github me-2"></i>{{ profile_user.github_username }}
+                                </a>
+                            </p>
+                        </div>
+                        {% endif %}
+                        {% if profile_user.linkedin_url %}
+                        <div class="col-md-6 mb-3">
+                            <strong>LinkedIn:</strong>
+                            <p class="text-muted">
+                                <a href="{{ profile_user.linkedin_url }}" target="_blank" class="text-decoration-none">
+                                    <i class="fab fa-linkedin me-2"></i>View Profile
+                                </a>
+                            </p>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Recent Activity -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Recent Activity</h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">No recent activity to display.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="col-md-4">
+            <!-- Stats -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">Stats</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Connections</span>
+                        <span class="fw-bold">{{ connections_count|default:"0" }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Projects</span>
+                        <span class="fw-bold">{{ projects_count|default:"0" }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span>Member Since</span>
+                        <span class="fw-bold">{{ profile_user.date_joined|date:"M Y" }}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Skills (placeholder) -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">Skills</h6>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">No skills listed yet.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

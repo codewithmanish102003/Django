@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% block title %}DevConnect - Home{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-4">Connect with Developers Worldwide</h1>
+        <p class="lead mb-4">Join the ultimate platform for developers to connect, collaborate, and build amazing projects together.</p>
+        {% if not user.is_authenticated %}
+            <div class="d-flex justify-content-center gap-3">
+                            <a href="{% url 'users:register' %}" class="btn btn-light btn-lg px-4">Get Started</a>
+            <a href="{% url 'users:login' %}" class="btn btn-outline-light btn-lg px-4">Sign In</a>
+            </div>
+        {% else %}
+            <a href="{% url 'profiles:user_discovery' %}" class="btn btn-light btn-lg px-4">Discover Developers</a>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="fw-bold mb-3">Why Choose DevConnect?</h2>
+                <p class="text-muted">Everything you need to grow your developer network and advance your career.</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 text-center p-4">
+                    <div class="card-body">
+                        <i class="fas fa-users fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">Connect</h5>
+                        <p class="card-text">Find and connect with developers who share your interests and skills.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 text-center p-4">
+                    <div class="card-body">
+                        <i class="fas fa-comments fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">Collaborate</h5>
+                        <p class="card-text">Real-time chat and collaboration tools to work together seamlessly.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 text-center p-4">
+                    <div class="card-body">
+                        <i class="fas fa-rocket fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">Grow</h5>
+                        <p class="card-text">Build your professional network and discover new opportunities.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Users Section -->
+{% if featured_users %}
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="fw-bold mb-3">Featured Developers</h2>
+                <p class="text-muted">Meet some of the amazing developers on our platform.</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            {% for user in featured_users %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        {% if user.avatar %}
+                            <img src="{{ user.avatar.url }}" alt="{{ user.username }}" class="rounded-circle mb-3" width="80" height="80">
+                        {% else %}
+                            <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                                <i class="fas fa-user fa-2x text-white"></i>
+                            </div>
+                        {% endif %}
+                        <h5 class="card-title">{{ user.get_full_name|default:user.username }}</h5>
+                        <p class="card-text text-muted">{{ user.bio|default:"Developer"|truncatechars:100 }}</p>
+                        <div class="d-flex justify-content-center gap-2 mb-3">
+                            {% if user.is_available_for_hire %}
+                                <span class="badge bg-success">Available for Hire</span>
+                            {% endif %}
+                            {% if user.is_available_for_projects %}
+                                <span class="badge bg-info">Open to Projects</span>
+                            {% endif %}
+                        </div>
+                        <a href="{% url 'profiles:user_profile' user.username %}" class="btn btn-outline-primary btn-sm">View Profile</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Stats Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-3">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <i class="fas fa-users fa-2x text-primary mb-2"></i>
+                        <h3 class="fw-bold">{{ total_users|default:"0" }}</h3>
+                        <p class="text-muted">Developers</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <i class="fas fa-comments fa-2x text-primary mb-2"></i>
+                        <h3 class="fw-bold">{{ total_conversations|default:"0" }}</h3>
+                        <p class="text-muted">Conversations</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <i class="fas fa-code fa-2x text-primary mb-2"></i>
+                        <h3 class="fw-bold">{{ total_projects|default:"0" }}</h3>
+                        <p class="text-muted">Projects</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <i class="fas fa-globe fa-2x text-primary mb-2"></i>
+                        <h3 class="fw-bold">{{ total_countries|default:"0" }}</h3>
+                        <p class="text-muted">Countries</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-3">Ready to Connect?</h2>
+        <p class="lead mb-4">Join thousands of developers who are already building amazing things together.</p>
+        {% if not user.is_authenticated %}
+            <a href="{% url 'users:register' %}" class="btn btn-light btn-lg px-4">Create Your Account</a>
+        {% else %}
+            <a href="{% url 'profiles:user_discovery' %}" class="btn btn-light btn-lg px-4">Explore Now</a>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
