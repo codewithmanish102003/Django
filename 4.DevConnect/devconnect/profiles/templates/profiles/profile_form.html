@@ -1,0 +1,29 @@
+<!-- templates/profile_form.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Profile</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+  <form method="POST" class="bg-white p-6 rounded-xl shadow w-96 max-w-md mx-auto">
+    {% csrf_token %}
+    <h2 class="text-2xl font-bold mb-4 text-center">Create Profile</h2>
+    <div class="mb-4">
+      <label class="block mb-2" for="bio">Bio</label>
+      <textarea name="bio" id="bio" class="w-full border border-gray-300 rounded p-2 mb-4"></textarea>
+    </div>
+
+    <div class="mb-4">
+      <label class="block mb-2" for="skills">Skills (comma separated)</label>
+      <input type="text" name="skills" id="skills" class="w-full border border-gray-300 rounded p-2 mb-4" />
+    </div>
+
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+      Save
+    </button>
+  </form>
+</body>
+</html>
