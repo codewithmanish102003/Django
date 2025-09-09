@@ -1,9 +1,11 @@
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic import CreateView
-from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
-from profiles.views import profile_list, profile_detail, profile_view, profile_list_view, profile_create_view
+from profiles.views import (
+    profile_list, profile_detail, profile_view, 
+    profile_list_view, profile_create_view,
+    RegisterView, LoginView, logout_view
+)
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -20,11 +22,7 @@ urlpatterns = [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     # Auth URLs
-    path('accounts/register/', 
-         CreateView.as_view(
-             template_name='registration/register.html',
-             form_class=UserCreationForm,
-             success_url=reverse_lazy('core:home')
-         ), name='register'),
-    path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/register/', RegisterView.as_view(), name='register'),
+    path('accounts/login/', LoginView.as_view(), name='login'),
+    path('accounts/logout/', logout_view, name='logout'),
 ]
